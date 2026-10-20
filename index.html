@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Workout & Progress Tracker</title>
   <style>
     * {
@@ -12,290 +12,339 @@
     }
     body {
       background-color: #0f172a;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 12px;
+      color: #f8fafc;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: 16px;
+      line-height: 1.5;
     }
-    .container {
-      width: 100%;
-      max-width: 980px;
+    .app-container {
+      max-width: 600px;
       margin: 0 auto;
       display: flex;
-      justify-content: center;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
+      flex-direction: column;
+      gap: 16px;
     }
-    svg {
+    
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+    .header h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .header p {
+      font-size: 13px;
+      color: #e0f2fe;
+    }
+    .header .subtitle {
+      font-size: 12px;
+      color: #93c5fd;
+      margin-top: 4px;
+    }
+
+    /* Cards */
+    .card {
+      background-color: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      padding: 16px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-title.push { color: #38bdf8; }
+    .card-title.pull { color: #10b981; }
+
+    /* Checkboxes */
+    .tracker-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #cbd5e1;
+      background: #0f172a;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+    }
+    .check-item input {
+      width: 18px;
+      height: 18px;
+      accent-color: #38bdf8;
+    }
+
+    /* Workouts */
+    .day-header {
+      background: #334155;
+      margin: -16px -16px 14px -16px;
+      padding: 12px 16px;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #f8fafc;
+      display: flex;
+      justify-content: space-between;
+    }
+    .exercise-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .exercise-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      border-bottom: 1px solid #2d3748;
+      padding-bottom: 8px;
+    }
+    .exercise-item:last-child {
+      border-bottom: none;
+    }
+    .ex-name {
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .ex-detail {
+      color: #94a3b8;
+      font-size: 12px;
+      text-align: right;
+    }
+    .notes-input {
+      margin-top: 10px;
       width: 100%;
-      height: auto;
-      display: block;
-      min-width: 320px;
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: #cbd5e1;
+      font-size: 12px;
+    }
+
+    /* Tips */
+    .tip-box {
+      background: #0f172a;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #334155;
+    }
+    .tip-box h4 {
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+    .tip-box p {
+      font-size: 12px;
+      color: #94a3b8;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1350" width="100%" height="100%" style="background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-      <!-- Style Definitions -->
-      <defs>
-        <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#3b82f6" />
-          <stop offset="100%" stop-color="#1d4ed8" />
-        </linearGradient>
-        <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#1e293b" />
-          <stop offset="100%" stop-color="#0f172a" />
-        </linearGradient>
-        <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#10b981" />
-          <stop offset="100%" stop-color="#059669" />
-        </linearGradient>
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <div class="header">
+      <h1>WEEKLY WORKOUT TRACKER</h1>
+      <p>Goal: Build Pull-Up & Push-Up Strength + Total Body Fitness</p>
+      <div class="subtitle">Equipment: 16kg KB | 10lb & 20lb DBs | Bands | Pull-Up Bar</div>
+    </div>
 
-        <!-- Checkbox Symbol -->
-        <g id="checkbox">
-          <rect x="0" y="0" width="22" height="22" rx="6" fill="#334155" stroke="#475569" stroke-width="1.5" />
-        </g>
-        <!-- Dot Symbol -->
-        <g id="bullet">
-          <circle cx="6" cy="6" r="4" fill="#38bdf8" />
-        </g>
-      </defs>
+    <!-- PUSH PROGRESSION -->
+    <div class="card">
+      <div class="card-title push">PUSH-UP PROGRESSION</div>
+      <p style="font-size: 12px; color: #94a3b8;">Current Stage: High Incline Push-Up</p>
+      <div class="tracker-grid">
+        <label class="check-item"><input type="checkbox"> High Incline</label>
+        <label class="check-item"><input type="checkbox"> Low Incline</label>
+        <label class="check-item"><input type="checkbox"> Knee / Floor</label>
+        <label class="check-item"><input type="checkbox"> Full Push-Up</label>
+      </div>
+    </div>
 
-      <!-- Main Container -->
-      <rect x="20" y="20" width="960" height="1310" rx="24" fill="#0f172a" stroke="#334155" stroke-width="2" />
+    <!-- PULL PROGRESSION -->
+    <div class="card">
+      <div class="card-title pull">PULL-UP PROGRESSION</div>
+      <p style="font-size: 12px; color: #94a3b8;">Current Stage: Band Pulldowns / Negatives</p>
+      <div class="tracker-grid">
+        <label class="check-item"><input type="checkbox"> Band Pulldown</label>
+        <label class="check-item"><input type="checkbox"> Band Assisted</label>
+        <label class="check-item"><input type="checkbox"> 5s Negatives</label>
+        <label class="check-item"><input type="checkbox"> Full Pull-Up</label>
+      </div>
+    </div>
 
-      <!-- HEADER SECTION -->
-      <rect x="40" y="40" width="920" height="130" rx="16" fill="url(#headerGrad)" />
-      <text x="70" y="85" fill="#ffffff" font-size="28" font-weight="800" letter-spacing="0.5">WEEKLY WORKOUT &amp; PROGRESS TRACKER</text>
-      <text x="70" y="115" fill="#93c5fd" font-size="15" font-weight="500">Equipment: 16kg KB | 10lb &amp; 20lb DBs | Light &amp; Medium Bands | Pull-Up Bar</text>
-      <text x="70" y="142" fill="#e0f2fe" font-size="13" font-weight="600">Goal: Build Pull-Up &amp; Push-Up Strength + Functional Total Body Fitness</text>
+    <!-- DAY 1 -->
+    <div class="card">
+      <div class="day-header">
+        <span>DAY 1: LOWER BODY & PULL</span>
+        <input type="checkbox">
+      </div>
+      <ul class="exercise-list">
+        <li class="exercise-item">
+          <span class="ex-name">Goblet Squat</span>
+          <span class="ex-detail">3 × 10–12 (16kg KB)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Dumbbell RDL</span>
+          <span class="ex-detail">3 × 12 (2x 20lb DB)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Kettlebell Swings</span>
+          <span class="ex-detail">3 × 15 (16kg KB)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Band Lat Pulldowns</span>
+          <span class="ex-detail">3 × 10–12 (Med Band)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Single-Arm Row</span>
+          <span class="ex-detail">3 × 10/side (16kg/20lb)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Deadbug</span>
+          <span class="ex-detail">3 × 10/side</span>
+        </li>
+      </ul>
+      <input type="text" class="notes-input" placeholder="Notes / Weights used today...">
+    </div>
 
-      <!-- QUICK SKILL PROGRESSION BOXES -->
-      <!-- Push Up Progression Card -->
-      <rect x="40" y="185" width="450" height="110" rx="14" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
-      <rect x="40" y="185" width="8" height="110" rx="4" fill="#38bdf8" />
-      <text x="65" y="212" fill="#38bdf8" font-size="15" font-weight="700">PUSH-UP PROGRESSION TRACKER</text>
-      <text x="65" y="238" fill="#94a3b8" font-size="13">Current: High Incline Push-Up (Bench/Bed frame)</text>
-      <use href="#checkbox" x="65" y="252" />
-      <text x="95" y="268" fill="#cbd5e1" font-size="12">High Incline</text>
-      <use href="#checkbox" x="180" y="252" />
-      <text x="210" y="268" fill="#cbd5e1" font-size="12">Low Incline</text>
-      <use href="#checkbox" x="295" y="252" />
-      <text x="325" y="268" fill="#cbd5e1" font-size="12">Knee / Floor</text>
-      <use href="#checkbox" x="405" y="252" />
-      <text x="435" y="268" fill="#cbd5e1" font-size="12">Full</text>
+    <!-- DAY 2 -->
+    <div class="card">
+      <div class="day-header">
+        <span>DAY 2: UPPER PUSH & CORE</span>
+        <input type="checkbox">
+      </div>
+      <ul class="exercise-list">
+        <li class="exercise-item">
+          <span class="ex-name">Incline Push-Ups</span>
+          <span class="ex-detail">3 × 8–10 (Elevated)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">DB Shoulder Press</span>
+          <span class="ex-detail">3 × 10 (2x 10lb DB)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Floor Chest Press</span>
+          <span class="ex-detail">3 × 12 (2x 20lb DB)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Band Pull-Aparts</span>
+          <span class="ex-detail">3 × 15 (Light Band)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">DB Lateral Raises</span>
+          <span class="ex-detail">3 × 12 (2x 10lb DB)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">KB Suitcase Carry</span>
+          <span class="ex-detail">3 × 30s walk/side</span>
+        </li>
+      </ul>
+      <input type="text" class="notes-input" placeholder="Notes / Weights used today...">
+    </div>
 
-      <!-- Pull Up Progression Card -->
-      <rect x="510" y="185" width="450" height="110" rx="14" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
-      <rect x="510" y="185" width="8" height="110" rx="4" fill="#10b981" />
-      <text x="535" y="212" fill="#10b981" font-size="15" font-weight="700">PULL-UP PROGRESSION TRACKER</text>
-      <text x="535" y="238" fill="#94a3b8" font-size="13">Current: Band Pulldowns / Assisted / Negatives</text>
-      <use href="#checkbox" x="535" y="252" />
-      <text x="565" y="268" fill="#cbd5e1" font-size="12">Band Lat Pulldown</text>
-      <use href="#checkbox" x="685" y="252" />
-      <text x="715" y="268" fill="#cbd5e1" font-size="12">Band Assisted</text>
-      <use href="#checkbox" x="810" y="252" />
-      <text x="840" y="268" fill="#cbd5e1" font-size="12">5s Negatives</text>
+    <!-- DAY 3 -->
+    <div class="card">
+      <div class="day-header">
+        <span>DAY 3: FULL BODY & HINGE</span>
+        <input type="checkbox">
+      </div>
+      <ul class="exercise-list">
+        <li class="exercise-item">
+          <span class="ex-name">DB Reverse Lunges</span>
+          <span class="ex-detail">3 × 10/side (2x 10lb)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Single-Leg RDL</span>
+          <span class="ex-detail">3 × 8–10/side (16kg)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Banded Inverted Rows</span>
+          <span class="ex-detail">3 × 10–12 (Med Band)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">DB Bicep Curls</span>
+          <span class="ex-detail">3 × 12 (2x 10lb DB)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Overhead Triceps Ext.</span>
+          <span class="ex-detail">3 × 10–12 (1x 20lb DB)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Forearm Plank Hold</span>
+          <span class="ex-detail">3 × 30–45s</span>
+        </li>
+      </ul>
+      <input type="text" class="notes-input" placeholder="Notes / Weights used today...">
+    </div>
 
-      <!-- DAY 1 CARD -->
-      <g transform="translate(40, 310)">
-        <rect x="0" y="0" width="450" height="225" rx="14" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
-        <path d="M 0 14 C 0 6, 6 0, 14 0 L 436 0 C 444 0, 450 6, 450 14 L 450 38 L 0 38 Z" fill="#334155" />
-        <text x="18" y="25" fill="#f8fafc" font-size="15" font-weight="700">DAY 1: LOWER BODY &amp; PULL PROGRESSION</text>
-        <use href="#checkbox" x="412" y="8" />
+    <!-- DAY 4 -->
+    <div class="card">
+      <div class="day-header">
+        <span>DAY 4: CONDITIONING EXPRESS</span>
+        <input type="checkbox">
+      </div>
+      <p style="font-size: 11px; color: #fbbf24; margin-bottom: 10px;">* Circuit: 3–4 Rounds (Rest 60–90s between rounds)</p>
+      <ul class="exercise-list">
+        <li class="exercise-item">
+          <span class="ex-name">KB Goblet Reverse Lunges</span>
+          <span class="ex-detail">10 reps total (16kg)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Slow Eccentric Push-Ups</span>
+          <span class="ex-detail">8–10 reps (3s down)</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Band Face Pulls</span>
+          <span class="ex-detail">15 reps</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Kettlebell Halos</span>
+          <span class="ex-detail">10 reps total</span>
+        </li>
+        <li class="exercise-item">
+          <span class="ex-name">Hollow Body Hold</span>
+          <span class="ex-detail">30s hold</span>
+        </li>
+      </ul>
+      <input type="text" class="notes-input" placeholder="Notes / Weights used today...">
+    </div>
 
-        <use href="#bullet" x="18" y="52" />
-        <text x="32" y="60" fill="#e2e8f0" font-size="13" font-weight="600">Goblet Squat:</text>
-        <text x="280" y="60" fill="#94a3b8" font-size="13">3 sets × 10–12 reps (16kg KB)</text>
+    <!-- TIPS -->
+    <div class="card">
+      <div class="card-title" style="color: #10b981;">TECHNIQUE TIPS</div>
+      
+      <div class="tip-box">
+        <h4 style="color: #38bdf8;">Push-Up Secret</h4>
+        <p>Prioritize <strong>Incline Push-Ups</strong> on a bench/chair over knee push-ups to build rigid plank stability without arching your lower back.</p>
+      </div>
 
-        <use href="#bullet" x="18" y="77" />
-        <text x="32" y="85" fill="#e2e8f0" font-size="13" font-weight="600">Dumbbell RDL:</text>
-        <text x="280" y="85" fill="#94a3b8" font-size="13">3 sets × 12 reps (2x 20lb DB)</text>
+      <div class="tip-box">
+        <h4 style="color: #10b981;">Pull-Up Secret</h4>
+        <p>Focus on <strong>Negative Pull-ups</strong> (jump to top, 4–5s slow lowering phase) and heavy band pulldowns to build lat strength.</p>
+      </div>
+    </div>
 
-        <use href="#bullet" x="18" y="102" />
-        <text x="32" y="110" fill="#e2e8f0" font-size="13" font-weight="600">Kettlebell Swings:</text>
-        <text x="280" y="110" fill="#94a3b8" font-size="13">3 sets × 15 reps (16kg KB)</text>
-
-        <use href="#bullet" x="18" y="127" />
-        <text x="32" y="135" fill="#e2e8f0" font-size="13" font-weight="600">Band Lat Pulldowns / Chin-ups:</text>
-        <text x="280" y="135" fill="#94a3b8" font-size="13">3 sets × 10–12 reps (Med Band)</text>
-
-        <use href="#bullet" x="18" y="152" />
-        <text x="32" y="160" fill="#e2e8f0" font-size="13" font-weight="600">Single-Arm Row:</text>
-        <text x="280" y="160" fill="#94a3b8" font-size="13">3 sets × 10/side (16kg/20lb)</text>
-
-        <use href="#bullet" x="18" y="177" />
-        <text x="32" y="185" fill="#e2e8f0" font-size="13" font-weight="600">Deadbug:</text>
-        <text x="280" y="185" fill="#94a3b8" font-size="13">3 sets × 10/side (Bodyweight)</text>
-
-        <line x1="18" y1="198" x2="432" y2="198" stroke="#334155" stroke-width="1" />
-        <text x="18" y="214" fill="#64748b" font-size="11">Notes/Weight Used:</text>
-      </g>
-
-      <!-- DAY 2 CARD -->
-      <g transform="translate(510, 310)">
-        <rect x="0" y="0" width="450" height="225" rx="14" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
-        <path d="M 0 14 C 0 6, 6 0, 14 0 L 436 0 C 444 0, 450 6, 450 14 L 450 38 L 0 38 Z" fill="#334155" />
-        <text x="18" y="25" fill="#f8fafc" font-size="15" font-weight="700">DAY 2: UPPER BODY PUSH &amp; CORE</text>
-        <use href="#checkbox" x="412" y="8" />
-
-        <use href="#bullet" x="18" y="52" />
-        <text x="32" y="60" fill="#e2e8f0" font-size="13" font-weight="600">Incline Push-Ups:</text>
-        <text x="280" y="60" fill="#94a3b8" font-size="13">3 sets × 8–10 reps (Elevated)</text>
-
-        <use href="#bullet" x="18" y="77" />
-        <text x="32" y="85" fill="#e2e8f0" font-size="13" font-weight="600">DB Overhead Shoulder Press:</text>
-        <text x="280" y="85" fill="#94a3b8" font-size="13">3 sets × 10 reps (2x 10lb DB)</text>
-
-        <use href="#bullet" x="18" y="102" />
-        <text x="32" y="110" fill="#e2e8f0" font-size="13" font-weight="600">Floor Chest Press:</text>
-        <text x="280" y="110" fill="#94a3b8" font-size="13">3 sets × 12 reps (2x 20lb DB)</text>
-
-        <use href="#bullet" x="18" y="127" />
-        <text x="32" y="135" fill="#e2e8f0" font-size="13" font-weight="600">Band Pull-Aparts:</text>
-        <text x="280" y="135" fill="#94a3b8" font-size="13">3 sets × 15 reps (Light Band)</text>
-
-        <use href="#bullet" x="18" y="152" />
-        <text x="32" y="160" fill="#e2e8f0" font-size="13" font-weight="600">DB Lateral Raises:</text>
-        <text x="280" y="160" fill="#94a3b8" font-size="13">3 sets × 12 reps (2x 10lb DB)</text>
-
-        <use href="#bullet" x="18" y="177" />
-        <text x="32" y="185" fill="#e2e8f0" font-size="13" font-weight="600">KB Suitcase Carry:</text>
-        <text x="280" y="185" fill="#94a3b8" font-size="13">3 sets × 30s walk/side (16kg)</text>
-
-        <line x1="18" y1="198" x2="432" y2="198" stroke="#334155" stroke-width="1" />
-        <text x="18" y="214" fill="#64748b" font-size="11">Notes/Weight Used:</text>
-      </g>
-
-      <!-- DAY 3 CARD -->
-      <g transform="translate(40, 550)">
-        <rect x="0" y="0" width="450" height="225" rx="14" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
-        <path d="M 0 14 C 0 6, 6 0, 14 0 L 436 0 C 444 0, 450 6, 450 14 L 450 38 L 0 38 Z" fill="#334155" />
-        <text x="18" y="25" fill="#f8fafc" font-size="15" font-weight="700">DAY 3: FULL BODY &amp; HINGE FOCUS</text>
-        <use href="#checkbox" x="412" y="8" />
-
-        <use href="#bullet" x="18" y="52" />
-        <text x="32" y="60" fill="#e2e8f0" font-size="13" font-weight="600">DB Reverse Lunges:</text>
-        <text x="280" y="60" fill="#94a3b8" font-size="13">3 sets × 10/side (2x 10lb DB)</text>
-
-        <use href="#bullet" x="18" y="77" />
-        <text x="32" y="85" fill="#e2e8f0" font-size="13" font-weight="600">B-Stance / Single-Leg RDL:</text>
-        <text x="280" y="85" fill="#94a3b8" font-size="13">3 sets × 8–10/side (16kg KB)</text>
-
-        <use href="#bullet" x="18" y="102" />
-        <text x="32" y="110" fill="#e2e8f0" font-size="13" font-weight="600">Inverted / Banded Rows:</text>
-        <text x="280" y="110" fill="#94a3b8" font-size="13">3 sets × 10–12 reps (Med Band)</text>
-
-        <use href="#bullet" x="18" y="127" />
-        <text x="32" y="135" fill="#e2e8f0" font-size="13" font-weight="600">DB Bicep Curls:</text>
-        <text x="280" y="135" fill="#94a3b8" font-size="13">3 sets × 12 reps (2x 10lb DB)</text>
-
-        <use href="#bullet" x="18" y="152" />
-        <text x="32" y="160" fill="#e2e8f0" font-size="13" font-weight="600">Overhead Triceps Extension:</text>
-        <text x="280" y="160" fill="#94a3b8" font-size="13">3 sets × 10–12 reps (1x 20lb DB)</text>
-
-        <use href="#bullet" x="18" y="177" />
-        <text x="32" y="185" fill="#e2e8f0" font-size="13" font-weight="600">Forearm Plank Hold:</text>
-        <text x="280" y="185" fill="#94a3b8" font-size="13">3 sets × 30–45s hold</text>
-
-        <line x1="18" y1="198" x2="432" y2="198" stroke="#334155" stroke-width="1" />
-        <text x="18" y="214" fill="#64748b" font-size="11">Notes/Weight Used:</text>
-      </g>
-
-      <!-- DAY 4 CARD -->
-      <g transform="translate(510, 550)">
-        <rect x="0" y="0" width="450" height="225" rx="14" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
-        <path d="M 0 14 C 0 6, 6 0, 14 0 L 436 0 C 444 0, 450 6, 450 14 L 450 38 L 0 38 Z" fill="#334155" />
-        <text x="18" y="25" fill="#f8fafc" font-size="15" font-weight="700">DAY 4: CONDITIONING &amp; CORE EXPRESS</text>
-        <use href="#checkbox" x="412" y="8" />
-
-        <use href="#bullet" x="18" y="52" />
-        <text x="32" y="60" fill="#e2e8f0" font-size="13" font-weight="600">KB Goblet Reverse Lunges:</text>
-        <text x="280" y="60" fill="#94a3b8" font-size="13">10 reps total (16kg KB)</text>
-
-        <use href="#bullet" x="18" y="77" />
-        <text x="32" y="85" fill="#e2e8f0" font-size="13" font-weight="600">Slow Eccentric Push-Ups:</text>
-        <text x="280" y="85" fill="#94a3b8" font-size="13">8–10 reps (3s lowering phase)</text>
-
-        <use href="#bullet" x="18" y="102" />
-        <text x="32" y="110" fill="#e2e8f0" font-size="13" font-weight="600">Band Face Pulls:</text>
-        <text x="280" y="110" fill="#94a3b8" font-size="13">15 reps (Band on Pull-up bar)</text>
-
-        <use href="#bullet" x="18" y="127" />
-        <text x="32" y="135" fill="#e2e8f0" font-size="13" font-weight="600">Kettlebell Halos:</text>
-        <text x="280" y="135" fill="#94a3b8" font-size="13">10 reps total (16kg / 10lb)</text>
-
-        <use href="#bullet" x="18" y="152" />
-        <text x="32" y="160" fill="#e2e8f0" font-size="13" font-weight="600">Hollow Body Hold / Deadbug:</text>
-        <text x="280" y="160" fill="#94a3b8" font-size="13">30s hold</text>
-
-        <text x="18" y="185" fill="#fbbf24" font-size="12" font-weight="600">* Perform as Circuit: 3–4 Rounds (Rest 60–90s between rounds)</text>
-
-        <line x1="18" y1="198" x2="432" y2="198" stroke="#334155" stroke-width="1" />
-        <text x="18" y="214" fill="#64748b" font-size="11">Notes/Weight Used:</text>
-      </g>
-
-      <!-- WEEKLY LOG TABLE -->
-      <g transform="translate(40, 790)">
-        <rect x="0" y="0" width="920" height="230" rx="14" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
-        <text x="20" y="32" fill="#38bdf8" font-size="16" font-weight="700">WEEKLY WORKOUT LOG</text>
-
-        <rect x="20" y="45" width="880" height="30" rx="6" fill="#334155" />
-        <text x="35" y="65" fill="#f8fafc" font-size="12" font-weight="700">DAY</text>
-        <text x="120" y="65" fill="#f8fafc" font-size="12" font-weight="700">DATE</text>
-        <text x="220" y="65" fill="#f8fafc" font-size="12" font-weight="700">WORKOUT COMPLETED</text>
-        <text x="450" y="65" fill="#f8fafc" font-size="12" font-weight="700">KEY PROGRESS / WEIGHTS USED</text>
-        <text x="750" y="65" fill="#f8fafc" font-size="12" font-weight="700">ENERGY / RPE (1-10)</text>
-
-        <line x1="20" y1="110" x2="900" y2="110" stroke="#334155" stroke-width="1" />
-        <text x="35" y="100" fill="#cbd5e1" font-size="13">Mon</text>
-        <text x="220" y="100" fill="#94a3b8" font-size="13">Day 1: Lower Body &amp; Pull</text>
-
-        <line x1="20" y1="145" x2="900" y2="145" stroke="#334155" stroke-width="1" />
-        <text x="35" y="135" fill="#cbd5e1" font-size="13">Tue</text>
-        <text x="220" y="135" fill="#94a3b8" font-size="13">Day 2: Upper Body Push &amp; Core</text>
-
-        <line x1="20" y1="180" x2="900" y2="180" stroke="#334155" stroke-width="1" />
-        <text x="35" y="170" fill="#cbd5e1" font-size="13">Thu</text>
-        <text x="220" y="170" fill="#94a3b8" font-size="13">Day 3: Full Body &amp; Hinge</text>
-
-        <text x="35" y="205" fill="#cbd5e1" font-size="13">Fri</text>
-        <text x="220" y="205" fill="#94a3b8" font-size="13">Day 4: Conditioning Express</text>
-      </g>
-
-      <!-- SKILL EXECUTION KEYS / QUICK TIPS -->
-      <g transform="translate(40, 1035)">
-        <rect x="0" y="0" width="920" height="260" rx="14" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
-        <text x="20" y="32" fill="#10b981" font-size="16" font-weight="700">TECHNIQUE &amp; PROGRESSION TIPS</text>
-
-        <rect x="20" y="50" width="430" height="90" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1" />
-        <text x="35" y="73" fill="#38bdf8" font-size="14" font-weight="700">Push-Up Progression Secret</text>
-        <text x="35" y="95" fill="#94a3b8" font-size="12">Avoid collapsing lower back on knee push-ups. Prioritize</text>
-        <text x="35" y="112" fill="#cbd5e1" font-size="12" font-weight="600">Incline Push-Ups</text>
-        <text x="145" y="112" fill="#94a3b8" font-size="12">on a bench/chair to build rigid plank strength.</text>
-
-        <rect x="470" y="50" width="430" height="90" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1" />
-        <text x="485" y="73" fill="#10b981" font-size="14" font-weight="700">Pull-Up Progression Secret</text>
-        <text x="485" y="95" fill="#94a3b8" font-size="12">Master</text>
-        <text x="532" y="95" fill="#cbd5e1" font-size="12" font-weight="600">Negative Pull-ups</text>
-        <text x="645" y="95" fill="#94a3b8" font-size="12">(jump to top, 4–5s lowering phase)</text>
-        <text x="485" y="112" fill="#94a3b8" font-size="12">and Heavy Band Lat Pulldowns to build lats &amp; grip strength.</text>
-
-        <rect x="20" y="150" width="430" height="90" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1" />
-        <text x="35" y="173" fill="#f97316" font-size="14" font-weight="700">Core &amp; Heavy Load Handling</text>
-        <text x="35" y="195" fill="#94a3b8" font-size="12">When using the 16kg Kettlebell for Goblet Squats or Swings,</text>
-        <text x="35" y="212" fill="#94a3b8" font-size="12">brace core tight like taking a punch. Keeps spine safe!</text>
-
-        <rect x="470" y="150" width="430" height="90" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1" />
-        <text x="485" y="173" fill="#a855f7" font-size="14" font-weight="700">Rest &amp; Recovery</text>
-        <text x="485" y="195" fill="#94a3b8" font-size="12">Take 60–90 seconds rest between sets on strength days.</text>
-        <text x="485" y="212" fill="#94a3b8" font-size="12">Active rest days (Wed/Sat/Sun): light walk or stretching.</text>
-      </g>
-    </svg>
   </div>
 
 </body>
